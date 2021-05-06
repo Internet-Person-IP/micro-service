@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mongodb
+  labels:
+    app: bidding-mongodb
+spec:
+  volumes:
+  - name: bidding-mongo-vol
+    persistentVolumeClaim:
+      claimName: bidding-pvc
+  containers:
+  - image: mongo
+    name: mongodb
+    command:
+    - mongod
+    - "--bind_ip"
+    - "0.0.0.0"
+    ports:
+    - containerPort: 27017
+    volumeMounts:
+    - name: bidding-mongo-vol
+      mountPath: /data/db
