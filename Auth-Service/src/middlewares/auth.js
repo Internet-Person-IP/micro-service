@@ -4,12 +4,15 @@ const Users = require('../models/Users-model')
 const auth = async (req, res, next) => {
     try {
         // const token = req.header('Authorization').replace('Bearer ', '')
-        const token = req.cookies['todo-jt']
-
+        let token = req.cookies['todo-jt']
+        console.log(req)
         if (token === '') {
             res.redirect(401, '/login')
+        }else if(token === undefined){
+            token = req.body.headers.Token
         }
-        const decoded_token = jwt.verify(token, process.env.JWT_SECRET)
+        console.log(token)
+        const decoded_token = jwt.verify(token, "pizza")
         const user = await Users.findOne({ _id: decoded_token._id, 'tokens.token': token })
 
         if (!user) {
@@ -21,6 +24,7 @@ const auth = async (req, res, next) => {
 
         next()
     } catch (e) {
+        console.log(e)
         res.status(401).send({ error: 'Please login first.' })
     }
 }

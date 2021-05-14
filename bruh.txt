@@ -1,0 +1,20 @@
+Firstly Upload the Auth Service
+Do:
+docker image build -t auth .
+docker tag auth gcr.io/exec-tut-cicd-kubernetes-react/auth
+docker push gcr.io/exec-tut-cicd-kubernetes-react/auth
+
+Firstly Upload the Todo Service
+Do:
+docker image build -t todo .
+docker tag todo gcr.io/exec-tut-cicd-kubernetes-react/todo
+docker push gcr.io/exec-tut-cicd-kubernetes-react/todo
+
+Firstly Upload the Frontend Service
+Do:
+docker image build -t todo-client-kubernetes-app .
+docker tag todo-client-kubernetes-app gcr.io/exec-tut-cicd-kubernetes-react/todo-client
+docker push gcr.io/exec-tut-cicd-kubernetes-react/todo-client
+
+
+

@@ -3,12 +3,12 @@ kind: Pod
 metadata:
   name: mongodb
   labels:
-    app: bidding-mongodb
+    app: todo-mongodb
 spec:
   volumes:
-  - name: bidding-mongo-vol
+  - name: todo-mongo-vol
     persistentVolumeClaim:
-      claimName: bidding-pvc
+      claimName: todo-pvc
   containers:
   - image: mongo
     name: mongodb
@@ -19,5 +19,5 @@ spec:
     ports:
     - containerPort: 27017
     volumeMounts:
-    - name: bidding-mongo-vol
+    - name: todo-mongo-vol
       mountPath: /data/db

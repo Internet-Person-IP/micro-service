@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo-service
+  template:
+    metadata:
+      labels:
+        app: todo-service
+    spec:
+      containers:
+      - image: gcr.io/exec-tut-cicd-kubernetes-react/todo
+        name: todo-container
+        env:
+        - name: MONGODB_URL
+          value: "mongodb://bidding-mongodb-service:27017/auth"
+        - name: CLIENT
+          value: http://35.230.147.229
+        - name: AUTH
+          value: http://35.230.147.229
+        ports:
+        - containerPort: 5000
+        imagePullPolicy: Always
+        

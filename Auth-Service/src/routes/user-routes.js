@@ -2,7 +2,7 @@ const express = require('express')
 const Users = require('../models/Users-model')
 const auth = require('../middlewares/auth')
 const routes = express.Router()
-
+const jwt = require('jsonwebtoken')
 
 // User create (signup)
 routes.post('/signup', async (req, res) => {
@@ -57,7 +57,8 @@ routes.post('/login', async (req, res) => {
         res.cookie('todo-jt', token, cookieOptions).send({ user, token })
 
     } catch (e) {
-        res.status(400).send()
+        console.log(e);
+        res.status(400).send(e)
     }
 })
 
@@ -74,6 +75,31 @@ routes.post('/logout', auth, async (req, res) => {
         res.send()
     } catch (e) {
         res.status(400).send()
+    }
+})
+
+routes.post('/auth', auth, async (req, res) => {
+    try {
+        // const token = req.header('Authorization').replace('Bearer ', '')
+        const cookieOptions = {
+            httpOnly: true,
+        };
+        let token = req.cookies['todo-jt']
+
+        if (token === '') {
+            res.redirect(401, '/login')
+        }else if(token === undefined){
+            token = req.body.headers.Token
+        }
+        const decoded_token = jwt.verify(token, "pizza")
+        const user = await Users.findOne({ _id: decoded_token._id, 'tokens.token': token })
+
+        res.cookie('todo-jt', token, cookieOptions).send({ user, token })
+
+        
+    } catch (e) {
+        console.log(e)
+        res.status(401).send({ error: 'Please login first.' })
     }
 })
 
